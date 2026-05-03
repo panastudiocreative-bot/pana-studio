@@ -329,8 +329,8 @@ h1 {
 .instagram-card h2,
 .contact-info h2 {
   margin-bottom: 18px;
-  font-size: clamp(2.15rem, 5vw, 4.7rem);
-  line-height: 0.98;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.1;
 }
 
 .section-heading p:not(.eyebrow),
