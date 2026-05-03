@@ -31,7 +31,7 @@ if (contactForm) {
     const message = formData.get("message").trim();
 
     const whatsappMessage = [
-      "Hola PANA STUDIO, quiero cotizar un proyecto.",
+      "Hola PANA STUDIO, quiero un render 3D para mi negocio."
       `Nombre: ${name}`,
       `Teléfono: ${phone}`,
       `Servicio: ${service}`,
