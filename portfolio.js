@@ -36,13 +36,13 @@ function crearTrabajo(trabajo, index) {
   item.style.setProperty("--item-delay", `${Math.min(index * 45, 360)}ms`);
   item.setAttribute("aria-label", `Ver ${trabajo.titulo}`);
 
-  item.innerHTML = `
-    <img src="${trabajo.imagen}" alt="${trabajo.titulo}" loading="lazy">
-    <div>
-      <span>${trabajo.categoria}</span>
-      <h3>${trabajo.titulo}</h3>
-    </div>
-  `;
+ card.innerHTML = `
+  <img src="${trabajo.imagen}" alt="${trabajo.titulo}">
+  <div class="portfolio-overlay">
+    <span>Render 3D</span>
+    <h3>${trabajo.titulo}</h3>
+  </div>
+`;
 
   item.addEventListener("click", () => abrirLightbox(trabajo));
   return item;
