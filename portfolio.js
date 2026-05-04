@@ -27,31 +27,55 @@ const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxCaption = document.querySelector(".lightbox-caption");
 const lightboxClose = document.querySelector(".lightbox-close");
-const animationDelay = 180;
+const animationDelay = 160;
+const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+let currentIndex = 0;
 
 function crearTrabajo(trabajo, index) {
   const item = document.createElement("button");
   item.className = "portfolio-item";
   item.type = "button";
-  item.style.setProperty("--item-delay", `${Math.min(index * 45, 360)}ms`);
-  item.setAttribute("aria-label", `Ver ${trabajo.titulo}`);
+  item.dataset.index = String(index);
+  item.style.setProperty("--item-delay", `${Math.min(index * 55, 440)}ms`);
+  item.setAttribute("aria-label", `Ver ${trabajo.titulo} ${index + 1}`);
 
- card.innerHTML = `
-  <img src="${trabajo.imagen}" alt="${trabajo.titulo}">
-  <div class="portfolio-overlay">
-    <span>Render 3D</span>
-    <h3>${trabajo.titulo}</h3>
-  </div>
-`;
+  item.innerHTML = `
+    <img src="${trabajo.imagen}" alt="${trabajo.titulo}" loading="lazy">
+    <div class="portfolio-overlay">
+      <span>Render 3D</span>
+      <h3>${trabajo.titulo}</h3>
+    </div>
+  `;
 
-  item.addEventListener("click", () => abrirLightbox(trabajo));
+  item.addEventListener("click", () => abrirLightbox(index));
+
+  if (hasFinePointer) {
+    item.addEventListener("mousemove", (event) => {
+      const bounds = item.getBoundingClientRect();
+      const x = event.clientX - bounds.left;
+      const y = event.clientY - bounds.top;
+      const rotateY = ((x / bounds.width) - 0.5) * 8;
+      const rotateX = (0.5 - (y / bounds.height)) * 8;
+
+      item.style.setProperty("--rotate-x", `${rotateX.toFixed(2)}deg`);
+      item.style.setProperty("--rotate-y", `${rotateY.toFixed(2)}deg`);
+      item.style.setProperty("--glow-x", `${((x / bounds.width) * 100).toFixed(2)}%`);
+      item.style.setProperty("--glow-y", `${((y / bounds.height) * 100).toFixed(2)}%`);
+    });
+
+    item.addEventListener("mouseleave", () => {
+      item.style.removeProperty("--rotate-x");
+      item.style.removeProperty("--rotate-y");
+      item.style.removeProperty("--glow-x");
+      item.style.removeProperty("--glow-y");
+    });
+  }
+
   return item;
 }
 
-function obtenerTrabajos(categoria) {
-  return categoria === "Todos"
-    ? trabajos
-    : trabajos.filter((trabajo) => trabajo.categoria === categoria);
+function obtenerTrabajos() {
+  return trabajos;
 }
 
 function pintarTrabajos(trabajosFiltrados) {
@@ -65,10 +89,10 @@ function pintarTrabajos(trabajosFiltrados) {
   portfolioGrid.appendChild(fragment);
 }
 
-function renderPortfolio(categoria = "Todos") {
+function renderPortfolio() {
   if (!portfolioGrid) return;
 
-  const trabajosFiltrados = obtenerTrabajos(categoria);
+  const trabajosFiltrados = obtenerTrabajos();
   portfolioGrid.classList.add("is-filtering");
 
   window.setTimeout(() => {
@@ -77,12 +101,16 @@ function renderPortfolio(categoria = "Todos") {
   }, animationDelay);
 }
 
-function abrirLightbox(trabajo) {
+function abrirLightbox(index) {
   if (!lightbox || !lightboxImage || !lightboxCaption) return;
+
+  currentIndex = index;
+  const trabajo = trabajos[currentIndex];
 
   lightboxImage.src = trabajo.imagen;
   lightboxImage.alt = trabajo.titulo;
   lightboxCaption.textContent = `${trabajo.categoria} · ${trabajo.titulo}`;
+  lightboxCaption.textContent = `${trabajo.titulo} ${currentIndex + 1}`;
   lightbox.classList.add("active");
   lightbox.setAttribute("aria-hidden", "false");
   document.body.classList.add("lightbox-open");
@@ -97,6 +125,13 @@ function cerrarLightbox() {
   document.body.classList.remove("lightbox-open");
   lightboxImage.src = "";
   lightboxCaption.textContent = "";
+}
+
+function navegarLightbox(direction) {
+  if (!lightbox?.classList.contains("active")) return;
+
+  currentIndex = (currentIndex + direction + trabajos.length) % trabajos.length;
+  abrirLightbox(currentIndex);
 }
 
 filterButtons.forEach((button) => {
@@ -126,6 +161,14 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     cerrarLightbox();
   }
+
+  if (event.key === "ArrowRight") {
+    navegarLightbox(1);
+  }
+
+  if (event.key === "ArrowLeft") {
+    navegarLightbox(-1);
+  }
 });
 
 filterButtons.forEach((button) => {
@@ -133,5 +176,5 @@ filterButtons.forEach((button) => {
 });
 
 if (portfolioGrid) {
-  pintarTrabajos(trabajos);
+  renderPortfolio();
 }
