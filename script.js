@@ -4,7 +4,7 @@ const navLinks = document.querySelectorAll(".site-nav a");
 const contactForm = document.querySelector("#contactForm");
 const whatsappNumber = "595976601527";
 
-if (contactForm) {
+if (false && contactForm) {
   contactForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -29,7 +29,7 @@ Mensaje: ${message}`;
 }
 const formNote = document.querySelector("#formNote");
 
-const whatsappNumber = "595976601527";
+const whatsappNumberFallback = "595976601527";
 
 if (navToggle) {
   navToggle.addEventListener("click", () => {
@@ -56,7 +56,7 @@ if (contactForm) {
     const message = formData.get("message").trim();
 
     const whatsappMessage = [
-      "Hola PANA STUDIO, quiero un render 3D para mi negocio."
+      "Hola PANA STUDIO, quiero un render 3D para mi negocio.",
       `Nombre: ${name}`,
       `Teléfono: ${phone}`,
       `Servicio: ${service}`,
