@@ -1,25 +1,10 @@
-const trabajos = [
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-1.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-2.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-3.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-4.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-5.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-6.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-7.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-8.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-9.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-10.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-11.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-12.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-13.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-14.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-15.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-16.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-17.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-18.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-19.png" },
-  { titulo: "Proyecto render 3D", imagen: "assets/trabajos/trabajo-20.png" }
-];
+const githubTrabajosBase =
+  "https://raw.githubusercontent.com/panastudiocreative-bot/pana-studio/main/assets/trabajos";
+
+const trabajos = Array.from({ length: 20 }, (_, index) => ({
+  titulo: "Proyecto render 3D",
+  imagen: `${githubTrabajosBase}/trabajo-${index + 1}.png`
+}));
 
 const portfolioGrid = document.querySelector("#portfolioGrid");
 const filterButtons = document.querySelectorAll(".filter-btn");
